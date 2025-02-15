@@ -11,7 +11,8 @@ public enum BusinessError {
 
     // User ---------------------------------------------------------------------------------------------------
 
-    NO_REGISTERED_USER("user:join:no_registered_user", "존재하지 않는 유저 입니다."),
+    NO_REGISTERED_USER("user:login:no_registered_user", "존재하지 않는 유저 입니다."),
+    REGISTERED_USER("user:join:registered_user", "이미 존재하는 유저 입니다."),
     ;
 
     BusinessError(String code, String message) {

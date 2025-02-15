@@ -17,13 +17,24 @@ public class AuthController {
 
     private final AuthService authService;
 
-    @PostMapping
+    @PostMapping("/login")
     ResponseDto login(@RequestBody LoginDto dto) {
 
         // dto -> model
         UserModel requestModel = dto.toModel();
 
         UserModel responseModel = authService.login(requestModel);
+
+        return new ResponseDto("200", "success", responseModel);
+    }
+
+    @PostMapping("/join")
+    ResponseDto join(@RequestBody LoginDto dto) {
+
+        // dto -> model
+        UserModel requestModel = dto.toModel();
+
+        UserModel responseModel = authService.join(requestModel);
 
         return new ResponseDto("200", "success", responseModel);
     }

@@ -45,4 +45,27 @@ class AuthServiceTest {
                 .returns(model.getUserName(), UserModel::getUserName);
     }
 
+    @Test
+    void joinTest() {
+
+        // given
+        UserModel model = UserModel.builder()
+                .userName("foo")
+                .userPassword("bar")
+                .build();
+        when(userRepository.findByUserName("foo"))
+                .thenReturn(Optional.of(User.builder()
+                        .userName("foo")
+                        .userPassword("bar")
+                        .build()));
+
+        // when
+        UserModel result = sut.join(model);
+
+        // then
+        assertThat(result).isNotNull();
+        assertThat(model.getUserName()).isEqualTo(result.getUserName());
+        assertThat(model.getUserPassword()).isEqualTo(result.getUserPassword());
+    }
+
 }

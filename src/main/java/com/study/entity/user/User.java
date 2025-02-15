@@ -1,9 +1,12 @@
 package com.study.entity.user;
 
+import com.study.entity.board.Board;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 /**
  * 사용자
@@ -34,9 +37,12 @@ public class User {
     @Column(name = "USER_PASSWORD", nullable = false)
     private String userPassword;
 
-    @Builder
-    User(String userName, String userPassword) {
+    @OneToMany(mappedBy = "user")
+    private List<Board> boards;
 
+    @Builder
+    @SuppressWarnings("unused")
+    User(String userName, String userPassword) {
         this.userName = userName;
         this.userPassword = userPassword;
     }
