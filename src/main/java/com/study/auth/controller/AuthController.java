@@ -1,7 +1,7 @@
 package com.study.auth.controller;
 
 import com.study.auth.dto.LoginDto;
-import com.study.auth.dto.ResponseDto;
+import com.study.common.dto.ResponseDto;
 import com.study.auth.model.UserModel;
 import com.study.auth.service.AuthService;
 import lombok.RequiredArgsConstructor;

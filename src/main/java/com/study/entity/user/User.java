@@ -42,7 +42,7 @@ public class User {
 
     @Builder
     @SuppressWarnings("unused")
-    User(String userName, String userPassword) {
+    public User(String userName, String userPassword) {
         this.userName = userName;
         this.userPassword = userPassword;
     }
