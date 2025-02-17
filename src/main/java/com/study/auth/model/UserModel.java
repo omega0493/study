@@ -12,7 +12,7 @@ public class UserModel {
     /**
      * 유저 번호
      */
-    private Long userId;
+    private Long id;
 
     /**
      * 유저 이름
@@ -25,7 +25,8 @@ public class UserModel {
     private String userPassword;
 
     @Builder
-    UserModel(String userName, String userPassword) {
+    UserModel(Long id, String userName, String userPassword) {
+        this.id = id;
         this.userName = userName;
         this.userPassword = userPassword;
     }
@@ -39,6 +40,7 @@ public class UserModel {
 
     public static UserModel fromEntity(User user) {
         return UserModel.builder()
+                .id(user.getId())
                 .userName(user.getUserName())
                 .userPassword(user.getUserPassword())
                 .build();

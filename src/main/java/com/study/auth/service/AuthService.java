@@ -47,7 +47,7 @@ public class AuthService {
             throw new BusinessException(BusinessError.REGISTERED_USER);
         }
 
-        userRepository.save(user);
+        user = userRepository.save(user);
 
         // entity -> model
         return UserModel.fromEntity(user);
