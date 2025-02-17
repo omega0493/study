@@ -1,5 +1,6 @@
 package com.study.board.dto;
 
+import com.study.auth.model.UserModel;
 import com.study.board.model.BoardModel;
 import com.study.entity.user.User;
 import lombok.Getter;
@@ -27,7 +28,10 @@ public class BoardDto {
         return BoardModel.builder()
                 .title(this.title)
                 .content(this.content)
-                .user(new User(this.userName, this.userPassword))
+                .user(UserModel.builder()
+                        .userName(this.userName)
+                        .userPassword(this.userPassword)
+                        .build())
                 .build();
     }
 
