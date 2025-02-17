@@ -1,5 +1,6 @@
 package com.study.board.model;
 
+import com.study.auth.model.UserModel;
 import com.study.entity.board.Board;
 import com.study.entity.user.User;
 import lombok.Builder;
@@ -22,7 +23,7 @@ public class BoardModel {
      */
     private String content;
 
-    private User user;
+    private UserModel user;
 
     /**
      * 작성일자
@@ -35,7 +36,7 @@ public class BoardModel {
     private LocalDate updateDate;
 
     @Builder
-    BoardModel(String title, String content, User user, LocalDate createDate, LocalDate updateDate) {
+    BoardModel(String title, String content, UserModel user, LocalDate createDate, LocalDate updateDate) {
         this.title = title;
         this.content = content;
         this.user = user;
@@ -47,7 +48,7 @@ public class BoardModel {
         return Board.builder()
                 .title(boardModel.getTitle())
                 .content(boardModel.getContent())
-                .user(boardModel.getUser())
+                .user(boardModel.getUser().toEntity())
                 .createDate(boardModel.getCreateDate())
                 .updateDate(boardModel.getUpdateDate())
                 .build();
@@ -57,7 +58,7 @@ public class BoardModel {
         return BoardModel.builder()
                 .title(board.getTitle())
                 .content(board.getContent())
-                .user(board.getUser())
+                .user(UserModel.fromEntity(board.getUser()))
                 .createDate(board.getCreateDate())
                 .updateDate(board.getUpdateDate())
                 .build();

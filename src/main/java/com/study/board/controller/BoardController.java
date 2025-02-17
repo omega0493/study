@@ -54,7 +54,7 @@ public class BoardController {
         return new ResponseDto("200", "success", responseModel);
     }
 
-    @DeleteMapping("/{id}")
+    @PutMapping("/{id}/delete")
     ResponseDto deleteBoard(@PathVariable Long id, @RequestBody BoardDto boardDto) {
 
         // dto -> model

@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -65,11 +66,10 @@ public class Board {
         this.updateDate = updateDate;
     }
 
-    public void updateBoard(Board board) {
+    public void edit(Board board) {
         this.title = board.getTitle();
         this.content = board.getContent();
         this.user = board.getUser();
-        this.createDate = board.getCreateDate();
         this.updateDate = board.getUpdateDate();
     }
 }

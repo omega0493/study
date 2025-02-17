@@ -95,7 +95,7 @@ public class BoardService {
 
         Board board = boardById.get();
 
-        board.updateBoard(boardEntity);
+        board.edit(boardEntity);
 
         // entity -> model
         return BoardModel.fromEntity(board);
