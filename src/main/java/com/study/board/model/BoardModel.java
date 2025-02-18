@@ -2,16 +2,20 @@ package com.study.board.model;
 
 import com.study.auth.model.UserModel;
 import com.study.entity.board.Board;
-import com.study.entity.user.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
 public class BoardModel {
+
+    /**
+     * 게시물 번호
+     */
+    private Long id;
 
     /**
      * 제목
@@ -28,15 +32,16 @@ public class BoardModel {
     /**
      * 작성일자
      */
-    private LocalDate createDate;
+    private LocalDateTime createDate;
 
     /**
      * 수정일자
      */
-    private LocalDate updateDate;
+    private LocalDateTime updateDate;
 
     @Builder
-    BoardModel(String title, String content, UserModel user, LocalDate createDate, LocalDate updateDate) {
+    BoardModel(Long id, String title, String content, UserModel user, LocalDateTime createDate, LocalDateTime updateDate) {
+        this.id = id;
         this.title = title;
         this.content = content;
         this.user = user;
@@ -56,6 +61,7 @@ public class BoardModel {
 
     public static BoardModel fromEntity(Board board) {
         return BoardModel.builder()
+                .id(board.getId())
                 .title(board.getTitle())
                 .content(board.getContent())
                 .user(UserModel.fromEntity(board.getUser()))

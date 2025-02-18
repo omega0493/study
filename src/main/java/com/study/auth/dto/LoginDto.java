@@ -1,22 +1,26 @@
 package com.study.auth.dto;
 
 import com.study.auth.model.UserModel;
-import lombok.Getter;
-import lombok.Setter;
 
-@Getter
-@Setter
-public class LoginDto {
+public record LoginDto(
+        Long id,
+        String userName,
 
-    private String userName;
-
-    private String userPassword;
-
+        String userPassword
+) {
     public UserModel toModel() {
         return UserModel.builder()
                 .userName(this.userName)
                 .userPassword(this.userPassword)
                 .build();
 
+    }
+
+    public static LoginDto fromModel(UserModel userModel) {
+        return new LoginDto(
+                userModel.getId(),
+                userModel.getUserName(),
+                userModel.getUserPassword()
+        );
     }
 }

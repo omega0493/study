@@ -2,28 +2,23 @@ package com.study.board.dto;
 
 import com.study.auth.model.UserModel;
 import com.study.board.model.BoardModel;
-import com.study.entity.user.User;
-import lombok.Getter;
-import lombok.Setter;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
-@Getter
-@Setter
-public class BoardDto {
+public record BoardDto(
+        Long id,
+        String title,
 
-    private String title;
+        String content,
 
-    private String content;
+        String userName,
 
-    private String userName;
+        String userPassword,
 
-    private String userPassword;
+        LocalDateTime createDate,
 
-    private LocalDate createDate;
-
-    private LocalDate updateDate;
-
+        LocalDateTime updateDate
+) {
     public BoardModel toModel() {
         return BoardModel.builder()
                 .title(this.title)
@@ -33,6 +28,18 @@ public class BoardDto {
                         .userPassword(this.userPassword)
                         .build())
                 .build();
+    }
+
+    public static BoardDto fromModel(BoardModel boardModel) {
+        return new BoardDto(
+                boardModel.getId(),
+                boardModel.getTitle(),
+                boardModel.getContent(),
+                boardModel.getUser().getUserName(),
+                boardModel.getUser().getUserPassword(),
+                boardModel.getCreateDate(),
+                boardModel.getUpdateDate()
+        );
     }
 
 }

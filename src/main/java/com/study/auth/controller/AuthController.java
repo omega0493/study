@@ -25,7 +25,7 @@ public class AuthController {
 
         UserModel responseModel = authService.login(requestModel);
 
-        return new ResponseDto("200", "success", responseModel);
+        return new ResponseDto("200", "success", LoginDto.fromModel(responseModel));
     }
 
     @PostMapping("/join")
@@ -36,6 +36,6 @@ public class AuthController {
 
         UserModel responseModel = authService.join(requestModel);
 
-        return new ResponseDto("200", "success", responseModel);
+        return new ResponseDto("200", "success", LoginDto.fromModel(responseModel));
     }
 }

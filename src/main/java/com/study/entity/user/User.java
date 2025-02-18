@@ -1,5 +1,6 @@
 package com.study.entity.user;
 
+import com.study.entity.base.AbstractAuditableEntity;
 import com.study.entity.board.Board;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -15,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "USER")
-public class User {
+public class User extends AbstractAuditableEntity {
 
     /**
      * 사용자 아이디

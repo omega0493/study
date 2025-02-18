@@ -5,11 +5,10 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  *  게시글
@@ -47,18 +46,18 @@ public class Board {
      */
     @CreatedDate
     @Column(name = "CREATE_DATE", nullable = false, updatable = false)
-    private LocalDate createDate;
+    private LocalDateTime createDate;
 
     /**
      * 수정 날짜
      */
     @LastModifiedDate
     @Column(name = "UPDATE_DATE", nullable = false)
-    private LocalDate updateDate;
+    private LocalDateTime updateDate;
 
     @Builder
     @SuppressWarnings("unused")
-    Board(String title, String content, User user, LocalDate createDate, LocalDate updateDate) {
+    Board(String title, String content, User user, LocalDateTime createDate, LocalDateTime updateDate) {
         this.title = title;
         this.content = content;
         this.user = user;

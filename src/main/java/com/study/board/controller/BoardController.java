@@ -7,6 +7,7 @@ import com.study.board.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -19,9 +20,18 @@ public class BoardController {
     @GetMapping("/all")
     ResponseDto getAllBoards() {
 
-        List<BoardModel> boardModel = boardService.getAllBoards();
+        List<BoardModel> responseModel = boardService.getAllBoards();
 
-        return new ResponseDto("200", "success", boardModel);
+        // model -> dto
+        List<BoardDto> boardDto = new ArrayList<>();
+
+        for (BoardModel model : responseModel) {
+            BoardDto dto = BoardDto.fromModel(model);
+
+            boardDto.add(dto);
+        }
+
+        return new ResponseDto("200", "success", boardDto);
     }
 
     @PostMapping
@@ -32,15 +42,15 @@ public class BoardController {
 
         BoardModel responseModel = boardService.createBoard(requestModel);
 
-        return new ResponseDto("200", "success", responseModel);
+        return new ResponseDto("200", "success", BoardDto.fromModel(responseModel));
     }
 
     @GetMapping("/{id}")
     ResponseDto getBoardById(@PathVariable Long id) {
 
-        BoardModel board = boardService.getBoardById(id);
+        BoardModel responseModel = boardService.getBoardById(id);
 
-        return new ResponseDto("200", "success", board);
+        return new ResponseDto("200", "success", BoardDto.fromModel(responseModel));
     }
 
     @PutMapping("/{id}")
@@ -51,7 +61,7 @@ public class BoardController {
 
         BoardModel responseModel = boardService.updateBoard(id, requestModel);
 
-        return new ResponseDto("200", "success", responseModel);
+        return new ResponseDto("200", "success", BoardDto.fromModel(responseModel));
     }
 
     @PutMapping("/{id}/delete")
@@ -62,6 +72,6 @@ public class BoardController {
 
         BoardModel responseModel = boardService.deleteModel(id, requestModel);
 
-        return new ResponseDto("200", "success", responseModel);
+        return new ResponseDto("200", "success", BoardDto.fromModel(responseModel));
     }
 }

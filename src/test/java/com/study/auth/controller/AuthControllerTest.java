@@ -32,10 +32,9 @@ class AuthControllerTest {
 
     @Test
     void loginTest() throws Exception {
+
         // given
-        LoginDto dto = new LoginDto();
-        dto.setUserName("foo");
-        dto.setUserPassword("bar");
+        LoginDto dto = new LoginDto(1L, "foo", "bar");
 
         when(authService.login(any()))
                 .thenReturn(UserModel.builder()
@@ -62,9 +61,7 @@ class AuthControllerTest {
     @Test
     void joinTest() throws Exception {
         // given
-        LoginDto dto = new LoginDto();
-        dto.setUserName("foo");
-        dto.setUserPassword("bar");
+        LoginDto dto = new LoginDto(1L, "foo", "bar");
 
         when(authService.join(any()))
                 .thenReturn(UserModel.builder()
