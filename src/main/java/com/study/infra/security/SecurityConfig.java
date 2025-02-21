@@ -21,10 +21,6 @@ public class SecurityConfig {
 
     private final JwtAuthFilter jwtAuthFilter;
 
-//    private final CustomAuthenticationEntryPointHandler customAuthenticationEntryPointHandler;
-//
-//    private final CustomAccessDeniedHandler customAccessDeniedHandler;
-
     @Bean
     public static BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
@@ -55,12 +51,6 @@ public class SecurityConfig {
 
         // before filter
         http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-
-        // exception handler
-//        http.exceptionHandling(conf -> conf
-//                .authenticationEntryPoint(customAuthenticationEntryPointHandler)
-//                .accessDeniedHandler(customAccessDeniedHandler)
-//        );
 
         // build
         return http.build();
