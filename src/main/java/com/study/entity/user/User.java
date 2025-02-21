@@ -48,4 +48,9 @@ public class User extends AbstractAuditableEntity {
         this.userPassword = userPassword;
     }
 
+    public void setUserPassword(String userPassword) {
+        this.userPassword = userPassword;
+    }
+
+
 }
