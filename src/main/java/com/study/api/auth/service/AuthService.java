@@ -1,11 +1,14 @@
 package com.study.api.auth.service;
 
+import com.study.api.auth.dto.LoginResponseDto;
 import com.study.api.auth.model.UserModel;
 import com.study.infra.common.exception.BusinessError;
 import com.study.infra.common.exception.BusinessException;
 import com.study.entity.user.User;
 import com.study.api.auth.repository.UserRepository;
+import com.study.infra.security.JwtProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,7 +20,11 @@ public class AuthService {
 
     private final UserRepository userRepository;
 
-    public UserModel login(UserModel model) {
+    private final PasswordEncoder encoder;
+
+    private final JwtProvider jwtProvider;
+
+    public LoginResponseDto login(UserModel model) {
 
         // model -> entity
         User user = model.toEntity();
@@ -25,12 +32,22 @@ public class AuthService {
         // 회원 정보 조회
         Optional<User> byUserName = userRepository.findByUserName(user.getUserName());
 
-        if(byUserName.isEmpty()) {
+        if (byUserName.isEmpty()) {
             throw new BusinessException(BusinessError.NO_REGISTERED_USER);
         }
 
+        if (!encoder.matches(model.getUserPassword(), byUserName.get().getUserPassword())) {
+            throw new BusinessException(BusinessError.NO_REGISTERED_USER);
+        }
+
+        String accessToken = jwtProvider.generateAccessToken(byUserName.get().getId());
+
+        String refreshToken = jwtProvider.generateRefreshToken(byUserName.get().getId());
+
         // entity -> model
-        return UserModel.fromEntity(byUserName.get());
+        UserModel userModel = UserModel.fromEntity(byUserName.get());
+
+        return LoginResponseDto.fromModel(userModel, accessToken, refreshToken);
     }
 
     @Transactional
@@ -47,9 +64,20 @@ public class AuthService {
             throw new BusinessException(BusinessError.REGISTERED_USER);
         }
 
+        user.setUserPassword(encoder.encode(user.getUserPassword()));
+
         user = userRepository.save(user);
 
         // entity -> model
         return UserModel.fromEntity(user);
+    }
+
+    public UserModel getUserById(Long id) {
+
+        // 회원 정보 조회
+        Optional<User> byUserName = userRepository.findById(id);
+
+        // entity -> model
+        return byUserName.map(UserModel::fromEntity).orElse(null);
     }
 }

@@ -1,5 +1,6 @@
 package com.study.api.auth.service;
 
+import com.study.api.auth.dto.LoginResponseDto;
 import com.study.api.auth.model.UserModel;
 import com.study.api.auth.service.AuthService;
 import com.study.infra.common.exception.BusinessException;
@@ -33,21 +34,25 @@ class AuthServiceTest {
         // given
         UserModel model = UserModel.builder()
                 .userName("foo")
-                .userPassword("bar")
+                .userPassword("$2a$10$u6g7CRVI8PAZa7sz7xNkjOi2F6Jwpf8d08vAX5W0eX8T.RxUhVFy2")
                 .build();
+
+        LoginResponseDto loginResponseDto = LoginResponseDto.fromModel(model, "", "");
+
         when(userRepository.findByUserName("foo"))
                 .thenReturn(Optional.of(User.builder()
                         .userName("foo")
-                        .userPassword("bar")
+                        .userPassword("$2a$10$u6g7CRVI8PAZa7sz7xNkjOi2F6Jwpf8d08vAX5W0eX8T.RxUhVFy2")
                         .build()));
 
         // when
-        UserModel result = sut.login(model);
+        LoginResponseDto result = sut.login(model);
 
         // then
         assertThat(result)
                 .isNotNull()
-                .returns(model.getUserName(), UserModel::getUserName);
+                .returns(loginResponseDto.userName(), LoginResponseDto::userName);
+//                .returns(model.getUserName(), UserModel::getUserName);
     }
 
     @Test

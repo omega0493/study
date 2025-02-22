@@ -2,6 +2,7 @@ package com.study.api.auth.controller;
 
 import com.study.api.auth.controller.AuthController;
 import com.study.api.auth.dto.LoginDto;
+import com.study.api.auth.dto.LoginResponseDto;
 import com.study.api.auth.model.UserModel;
 import com.study.api.auth.service.AuthService;
 import com.study.test.config.TestSecurityConfig;
@@ -37,12 +38,21 @@ class AuthControllerTest {
         // given
         LoginDto dto = new LoginDto(1L, "foo", "bar");
 
+        UserModel userModel = UserModel.builder()
+                .id(1L)
+                .userName("foo")
+                .userPassword("bar")
+                .build();
+
         when(authService.login(any()))
-                .thenReturn(UserModel.builder()
-                        .id(1L)
-                        .userName("foo")
-                        .userPassword("bar")
-                        .build());
+                .thenReturn(LoginResponseDto.fromModel(userModel, "", ""));
+
+//        when(authService.login(any()))
+//                .thenReturn(UserModel.builder()
+//                        .id(1L)
+//                        .userName("foo")
+//                        .userPassword("bar")
+//                        .build());
 
         mockMvc
                 // when

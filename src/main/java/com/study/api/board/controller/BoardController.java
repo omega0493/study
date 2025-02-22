@@ -1,5 +1,6 @@
 package com.study.api.board.controller;
 
+import com.study.api.auth.model.UserModel;
 import com.study.infra.common.dto.ResponseDto;
 import com.study.api.board.dto.BoardDto;
 import com.study.api.board.model.BoardModel;
@@ -18,7 +19,7 @@ public class BoardController {
     private final BoardService boardService;
 
     @GetMapping("/all")
-    ResponseDto getAllBoards() {
+    ResponseDto getAllBoards(UserModel userModel) {
 
         List<BoardModel> responseModel = boardService.getAllBoards();
 
