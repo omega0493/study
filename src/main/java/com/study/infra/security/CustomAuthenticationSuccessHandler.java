@@ -5,13 +5,18 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
+@Component
 @RequiredArgsConstructor
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
@@ -36,18 +41,20 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         refreshTokenCookie.setMaxAge(7 * 24 * 60 * 60); // 7일 유지
 
         // SameSite 설정을 추가하려면 직접 헤더 추가
-        response.addHeader("Set-Cookie", "refresh_token=" + refreshToken + "; Path=/; HttpOnly; Secure; SameSite=Strict");
+//        response.addHeader("Set-Cookie", "refresh_token=" + refreshToken + "; Path=/; HttpOnly; Secure; SameSite=Strict");
+        response.addHeader(HttpHeaders.AUTHORIZATION, "Bearer %s".formatted(accessToken));
 
         response.addCookie(refreshTokenCookie);
 
         // JSON 응답 (Access Token 반환)
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.setCharacterEncoding(StandardCharsets.UTF_8.name());
 
-        Map<String, String> tokens = new HashMap<>();
-        tokens.put("access_token", accessToken);
-
-        String json = new ObjectMapper().writeValueAsString(tokens);
-        response.getWriter().write(json);
+//        Map<String, String> tokens = new HashMap<>();
+//        tokens.put("access_token", accessToken);
+//
+//        String json = new ObjectMapper().writeValueAsString(tokens);
+//        response.getWriter().write(json);
     }
+
 }

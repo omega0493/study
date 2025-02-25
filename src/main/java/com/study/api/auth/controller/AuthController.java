@@ -23,29 +23,30 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/login")
-    ResponseEntity<ResponseDto> login(@RequestBody LoginDto dto) {
+    LoginResponseDto login(@RequestBody LoginDto dto) {
 
         // dto -> model
         UserModel requestModel = dto.toModel();
 
         LoginResponseDto loginResponseDto = authService.login(requestModel);
 
-        ResponseCookie refreshTokenCookie = ResponseCookie.from("refresh_token", loginResponseDto.refreshToken())
-                .httpOnly(true)
-                .secure(true)
-                .path("/")
-                .maxAge(7 * 24 * 60 * 60) // 7일 동안 유지
-                .sameSite("Strict") // CSRF 방지
-                .build();
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.SET_COOKIE, refreshTokenCookie.toString());
-        headers.add(HttpHeaders.AUTHORIZATION, "Bearer %s".formatted(loginResponseDto.accessToken()));
-
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .headers(headers)
-                .body(new ResponseDto("200", "success", loginResponseDto));
+//        ResponseCookie refreshTokenCookie = ResponseCookie.from("refresh_token", loginResponseDto.refreshToken())
+//                .httpOnly(true)
+//                .secure(true)
+//                .path("/")
+//                .maxAge(7 * 24 * 60 * 60) // 7일 동안 유지
+//                .sameSite("Strict") // CSRF 방지
+//                .build();
+//
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.add(HttpHeaders.SET_COOKIE, refreshTokenCookie.toString());
+//        headers.add(HttpHeaders.AUTHORIZATION, "Bearer %s".formatted(loginResponseDto.accessToken()));
+//
+//        return ResponseEntity
+//                .status(HttpStatus.OK)
+//                .headers(headers)
+//                .body(new ResponseDto("200", "success", loginResponseDto));
+        return loginResponseDto;
     }
 
     @PostMapping("/join")

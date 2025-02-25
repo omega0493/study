@@ -12,6 +12,17 @@ public class ApiSuccessHandler implements ResponseBodyAdvice<Object> {
     @Override
     public boolean supports(MethodParameter returnType, Class converterType) {
         // 모든 API 응답을 처리하도록 true 반환
+        Class<?> type = returnType.getParameterType();
+
+        // 이미 ResponseEntity 형태이면 변경하지 않고 그대로 반환
+        if (ResponseEntity.class.isAssignableFrom(type)) {
+            return false;
+        }
+
+        if (ResponseDto.class.isAssignableFrom(type)) {
+            return false;
+        }
+
         return true;
     }
 
@@ -21,12 +32,6 @@ public class ApiSuccessHandler implements ResponseBodyAdvice<Object> {
                                   Class selectedConverterType,
                                   org.springframework.http.server.ServerHttpRequest request,
                                   org.springframework.http.server.ServerHttpResponse response) {
-
-        // 이미 ResponseEntity 형태이면 변경하지 않고 그대로 반환
-        if (body instanceof ResponseEntity) {
-            return body;
-        }
-
         return new ResponseDto("200", "요청이 성공적으로 처리되었습니다.", body);
     }
 }

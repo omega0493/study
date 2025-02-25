@@ -14,6 +14,7 @@ public enum BusinessError {
     NO_REGISTERED_USER("user:login:no_registered_user", "존재하지 않는 유저 입니다."),
     REGISTERED_USER("user:join:registered_user", "이미 존재하는 유저 입니다."),
     PASSWORD_MISMATCH("user:find:password_mismatch", "비밀번호가 일치하지 않습니다."),
+    INCORRECT_CREDENTIALS("user:auth:incorrect_credentials", "잘못된 인증 정보입니다."),
 
     // board --------------------------------------------------------------------------------------------------
     NO_REGISTERED_BOARD("board:find:no_registered_board", "존재하지 않는 게시글 입니다."),

@@ -1,6 +1,7 @@
 package com.study.infra.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.study.infra.common.dto.ResponseDto;
 import com.study.infra.common.exception.BusinessError;
 import com.study.infra.common.exception.BusinessException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,13 +23,16 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 
         // 실패 이유 설정
+        BusinessError businessError;
         if (exception instanceof BadCredentialsException) {
-            String json = new ObjectMapper().writeValueAsString(new BusinessException(BusinessError.INCORRECT_CREDENTIALS));
-            response.getWriter().write(json);
+            businessError = BusinessError.INCORRECT_CREDENTIALS;
+        } else {
+            businessError = BusinessError.PASSWORD_MISMATCH;
         }
 
-        // JSON 응답
-        String json = new ObjectMapper().writeValueAsString(new BusinessException(BusinessError.PASSWORD_MISMATCH));
+        ResponseDto body = new ResponseDto(businessError.getCode(), businessError.getMessage(), null);
+        String json = new ObjectMapper().writeValueAsString(body);
         response.getWriter().write(json);
     }
+
 }
