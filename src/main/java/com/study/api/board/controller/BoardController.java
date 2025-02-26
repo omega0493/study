@@ -19,9 +19,10 @@ public class BoardController {
     private final BoardService boardService;
 
     @GetMapping("/all")
-    ResponseDto getAllBoards(UserModel userModel) {
+    List<BoardDto> getAllBoards(UserModel userModel) {
 
         List<BoardModel> responseModel = boardService.getAllBoards();
+
 
         // model -> dto
         List<BoardDto> boardDto = new ArrayList<>();
@@ -32,7 +33,7 @@ public class BoardController {
             boardDto.add(dto);
         }
 
-        return new ResponseDto("200", "success", boardDto);
+        return boardDto;
     }
 
     @PostMapping

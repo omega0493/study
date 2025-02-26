@@ -16,7 +16,10 @@ public enum BusinessError {
     PASSWORD_MISMATCH("user:find:password_mismatch", "비밀번호가 일치하지 않습니다."),
     INCORRECT_CREDENTIALS("user:auth:incorrect_credentials", "잘못된 인증 정보입니다."),
 
-    // board --------------------------------------------------------------------------------------------------
+    // Token
+    REFRESH_TOKEN_INVALID("token:refresh_token_invalid", "Refresh Token이 만료되었거나 정상적인 Token이 아닙니다."),
+
+    // Board --------------------------------------------------------------------------------------------------
     NO_REGISTERED_BOARD("board:find:no_registered_board", "존재하지 않는 게시글 입니다."),
     ;
 
