@@ -48,6 +48,7 @@ public class SecurityConfig {
         // http request 인증 설정
         http.authorizeHttpRequests(authorize -> authorize
                 .requestMatchers(HttpMethod.POST, "/auth/login", "/auth/join").permitAll()
+                .requestMatchers(HttpMethod.GET, "/token").permitAll()
                 // 그 외 요청 체크
                 .anyRequest().authenticated()
         );

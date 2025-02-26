@@ -1,10 +1,17 @@
 package com.study.infra.web;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.study.infra.common.dto.ResponseDto;
 import org.springframework.core.MethodParameter;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
+
+import java.math.BigDecimal;
+import java.math.BigInteger;
 
 @ControllerAdvice
 public class ApiSuccessHandler implements ResponseBodyAdvice<Object> {
@@ -32,6 +39,33 @@ public class ApiSuccessHandler implements ResponseBodyAdvice<Object> {
                                   Class selectedConverterType,
                                   org.springframework.http.server.ServerHttpRequest request,
                                   org.springframework.http.server.ServerHttpResponse response) {
-        return new ResponseDto("200", "요청이 성공적으로 처리되었습니다.", body);
+        ResponseDto responseDto = new ResponseDto("200", "요청이 성공적으로 처리되었습니다.", body);
+
+        // 만약 컨트롤러가 String을 반환하면 JSON 문자열로 변환 필요
+        if (isNonPojo(body)) {
+            try {
+                HttpHeaders headers = response.getHeaders();
+                headers.set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
+                return new ObjectMapper().writeValueAsString(responseDto);
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException("JSON 변환 오류", e);
+            }
+        }
+
+        return responseDto;
     }
+
+    private static boolean isNonPojo(Object o) {
+        return o instanceof Boolean
+                || o instanceof Byte
+                || o instanceof Short
+                || o instanceof Integer
+                || o instanceof Long
+                || o instanceof Float
+                || o instanceof Double
+                || o instanceof String
+                || o instanceof BigInteger
+                || o instanceof BigDecimal;
+    }
+
 }
