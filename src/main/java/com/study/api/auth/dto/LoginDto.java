@@ -1,12 +1,15 @@
 package com.study.api.auth.dto;
 
+import com.study.api.auth.constant.UserRole;
 import com.study.api.auth.model.UserModel;
 
 public record LoginDto(
         Long id,
         String userName,
 
-        String userPassword
+        String userPassword,
+
+        UserRole userRole
 ) {
     public UserModel toModel() {
         return UserModel.builder()
@@ -20,7 +23,8 @@ public record LoginDto(
         return new LoginDto(
                 userModel.getId(),
                 userModel.getUserName(),
-                userModel.getUserPassword()
+                userModel.getUserPassword(),
+                userModel.getUserRole()
         );
     }
 }

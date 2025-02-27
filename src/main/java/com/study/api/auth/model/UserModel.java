@@ -1,5 +1,6 @@
 package com.study.api.auth.model;
 
+import com.study.api.auth.constant.UserRole;
 import com.study.entity.user.User;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,17 +25,24 @@ public class UserModel {
      */
     private String userPassword;
 
+    /**
+     * 유저 역할
+     */
+    private UserRole userRole;
+
     @Builder
-    UserModel(Long id, String userName, String userPassword) {
+    UserModel(Long id, String userName, String userPassword, UserRole userRole) {
         this.id = id;
         this.userName = userName;
         this.userPassword = userPassword;
+        this.userRole = userRole;
     }
 
     public User toEntity() {
         return User.builder()
                 .userName(this.userName)
                 .userPassword(this.userPassword)
+                .userRole(this.userRole)
                 .build();
     }
 
@@ -43,6 +51,7 @@ public class UserModel {
                 .id(user.getId())
                 .userName(user.getUserName())
                 .userPassword(user.getUserPassword())
+                .userRole(user.getUserRole())
                 .build();
     }
 }

@@ -1,5 +1,6 @@
 package com.study.entity.user;
 
+import com.study.api.auth.constant.UserRole;
 import com.study.entity.base.AbstractAuditableEntity;
 import com.study.entity.board.Board;
 import jakarta.persistence.*;
@@ -38,14 +39,22 @@ public class User extends AbstractAuditableEntity {
     @Column(name = "USER_PASSWORD", nullable = false)
     private String userPassword;
 
+    /**
+     * 사용자 역할
+     */
+    @Enumerated(EnumType.STRING)
+    @Column(name = "USER_ROLE", nullable = false)
+    private UserRole userRole;
+
     @OneToMany(mappedBy = "user")
     private List<Board> boards;
 
     @Builder
     @SuppressWarnings("unused")
-    public User(String userName, String userPassword) {
+    public User(String userName, String userPassword, UserRole userRole) {
         this.userName = userName;
         this.userPassword = userPassword;
+        this.userRole = userRole;
     }
 
     public void setUserPassword(String userPassword) {
