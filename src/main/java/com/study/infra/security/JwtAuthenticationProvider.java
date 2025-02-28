@@ -1,6 +1,6 @@
 package com.study.infra.security;
 
-import com.study.api.auth.service.AuthService;
+import com.study.api.auth.constant.UserRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -8,10 +8,11 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import java.util.Collections;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -34,7 +35,8 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
                 throw new BadCredentialsException("Wrong token");
             }
 
-            return new UsernamePasswordAuthenticationToken(userId, null, Collections.emptyList());
+            List<SimpleGrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(UserRole.USER.getCode()));
+            return new UsernamePasswordAuthenticationToken(userId, null, authorities);
         }
 
         throw new AuthenticationCredentialsNotFoundException("Not found token");
