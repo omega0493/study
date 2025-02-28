@@ -1,12 +1,15 @@
 package com.study.infra.security;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.study.api.auth.constant.UserRole;
+import com.study.infra.common.dto.ResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -19,6 +22,7 @@ import org.springframework.security.web.authentication.AuthenticationFilter;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @Slf4j
@@ -57,10 +61,22 @@ public class SecurityConfig {
         );
 
         http.exceptionHandling(conf -> conf
-                .accessDeniedHandler((request, response, accessDeniedException) -> {
-                    response.setStatus(HttpStatus.FORBIDDEN.value());
-                    log.info("----- ACCESS DENIED");
-                })
+                        .accessDeniedHandler((request, response, accessDeniedException) -> {
+                            response.setStatus(HttpStatus.FORBIDDEN.value());
+                            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+                            response.setCharacterEncoding(StandardCharsets.UTF_8.name());
+
+                            ResponseDto body = new ResponseDto(
+                                    "403", // 상태 코드
+                                    "권한이 없습니다.", // 메시지
+                                    null // 데이터 없음
+                            );
+
+                            log.info("----- ACCESS DENIED: {}", accessDeniedException.getMessage());
+
+                            // JSON 변환 후 응답
+                            response.getWriter().write(new ObjectMapper().writeValueAsString(body));
+                        })
         );
 
         // form login disable
