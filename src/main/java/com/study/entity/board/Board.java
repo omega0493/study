@@ -1,5 +1,6 @@
 package com.study.entity.board;
 
+import com.study.entity.base.AbstractAuditableEntity;
 import com.study.entity.user.User;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -17,7 +18,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity
 @Table(name = "BOARD")
-public class Board {
+public class Board extends AbstractAuditableEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,7 +33,7 @@ public class Board {
 
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "USER_NAME", referencedColumnName = "USER_NAME", insertable = false, updatable = false)
+    @JoinColumn(name = "USER_ID", referencedColumnName = "USER_ID", updatable = false)
     private User user;
 
     /**
@@ -41,34 +42,21 @@ public class Board {
     @Column(name = "CONTENT", nullable = false)
     private String content;
 
-    /**
-     * 작성 날짜
-     */
-    @CreatedDate
-    @Column(name = "CREATE_DATE", nullable = false, updatable = false)
-    private LocalDateTime createDate;
-
-    /**
-     * 수정 날짜
-     */
-    @LastModifiedDate
-    @Column(name = "UPDATE_DATE", nullable = false)
-    private LocalDateTime updateDate;
-
     @Builder
     @SuppressWarnings("unused")
     Board(String title, String content, User user, LocalDateTime createDate, LocalDateTime updateDate) {
         this.title = title;
         this.content = content;
         this.user = user;
-        this.createDate = createDate;
-        this.updateDate = updateDate;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public void edit(Board board) {
         this.title = board.getTitle();
         this.content = board.getContent();
         this.user = board.getUser();
-        this.updateDate = board.getUpdateDate();
     }
 }
