@@ -23,7 +23,6 @@ public class BoardController {
 
         List<BoardModel> responseModel = boardService.getAllBoards();
 
-
         // model -> dto
         List<BoardDto> boardDto = new ArrayList<>();
 
@@ -37,7 +36,7 @@ public class BoardController {
     }
 
     @PostMapping
-    ResponseDto createBoard(@RequestBody BoardDto boardDto) {
+    ResponseDto createBoard(@RequestBody BoardDto boardDto, UserModel userModel) {
 
         // dto -> model
         BoardModel requestModel = boardDto.toModel();
@@ -48,7 +47,7 @@ public class BoardController {
     }
 
     @GetMapping("/{id}")
-    ResponseDto getBoardById(@PathVariable Long id) {
+    ResponseDto getBoardById(@PathVariable Long id, UserModel userModel) {
 
         BoardModel responseModel = boardService.getBoardById(id);
 
@@ -56,7 +55,7 @@ public class BoardController {
     }
 
     @PutMapping("/{id}")
-    ResponseDto updateBoard(@PathVariable Long id, @RequestBody BoardDto boardDto) {
+    ResponseDto updateBoard(@PathVariable Long id, @RequestBody BoardDto boardDto, UserModel userModel) {
 
         // dto -> model
         BoardModel requestModel = boardDto.toModel();
@@ -67,7 +66,7 @@ public class BoardController {
     }
 
     @PutMapping("/{id}/delete")
-    ResponseDto deleteBoard(@PathVariable Long id, @RequestBody BoardDto boardDto) {
+    ResponseDto deleteBoard(@PathVariable Long id, @RequestBody BoardDto boardDto, UserModel userModel) {
 
         // dto -> model
         BoardModel requestModel = boardDto.toModel();

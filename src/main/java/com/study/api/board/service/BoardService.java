@@ -8,6 +8,7 @@ import com.study.api.board.repository.BoardRepository;
 import com.study.entity.user.User;
 import com.study.api.auth.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +24,8 @@ public class BoardService {
     private final BoardRepository boardRepository;
 
     private final UserRepository userRepository;
+
+    private final PasswordEncoder encoder;
 
     // 전체 게시글 목록 조회
     public List<BoardModel> getAllBoards() {
@@ -60,9 +63,11 @@ public class BoardService {
         }
 
         // 회원 비밀 번호 확인
-        if(!board.getUser().getUserPassword().equals(user.get().getUserPassword())) {
-            throw new BusinessException(BusinessError.PASSWORD_MISMATCH);
+        if (!encoder.matches(board.getUser().getUserPassword(), user.get().getUserPassword())) {
+            throw new BusinessException(BusinessError.NO_REGISTERED_USER);
         }
+
+        board.setUser(user.get());
 
         boardRepository.save(board);
 
