@@ -56,6 +56,15 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/board/**").hasAnyRole(
                         UserRole.USER.name(),
                         UserRole.ADMIN.name())
+                .requestMatchers(HttpMethod.POST, "/board/**").hasAnyRole(
+                        UserRole.USER.name(),
+                        UserRole.ADMIN.name())
+                .requestMatchers(HttpMethod.PUT, "/board/**").hasAnyRole(
+                        UserRole.USER.name(),
+                        UserRole.ADMIN.name())
+                .requestMatchers(HttpMethod.DELETE, "/board/**").hasAnyRole(
+                        UserRole.USER.name(),
+                        UserRole.ADMIN.name())
                 // 그 외 요청 체크
                 .anyRequest().authenticated()
         );
