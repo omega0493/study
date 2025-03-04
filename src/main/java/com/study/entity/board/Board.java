@@ -1,5 +1,6 @@
 package com.study.entity.board;
 
+import com.study.api.board.model.BoardModel;
 import com.study.entity.base.AbstractAuditableEntity;
 import com.study.entity.user.User;
 import jakarta.persistence.*;
@@ -54,9 +55,9 @@ public class Board extends AbstractAuditableEntity {
         this.user = user;
     }
 
-    public void edit(Board board) {
+    public void edit(BoardModel board) {
         this.title = board.getTitle();
         this.content = board.getContent();
-        this.user = board.getUser();
+//        this.user = board.getUser();
     }
 }

@@ -96,11 +96,11 @@ public class BoardService {
 
         Optional<Board> boardById = boardRepository.findById(id);
 
-        checkBoardAccess(boardById);
+        checkBoardAccess(boardById, boardEntity);
 
         Board board = boardById.get();
 
-        board.edit(boardEntity);
+        board.edit(boardModel);
 
         // entity -> model
         return BoardModel.fromEntity(board);
@@ -110,16 +110,19 @@ public class BoardService {
     @Transactional
     public BoardModel deleteModel(Long id, BoardModel boardModel) {
 
+        // model -> entity
+        Board boardEntity = boardModel.toEntity(boardModel);
+
         Optional<Board> boardById = boardRepository.findById(id);
 
-        checkBoardAccess(boardById);
+        checkBoardAccess(boardById, boardEntity);
 
         boardRepository.deleteById(id);
 
         return boardModel;
     }
 
-    private void checkBoardAccess(Optional<Board> boardById) {
+    private void checkBoardAccess(Optional<Board> boardById, Board boardEntity) {
 
         // 게시물 존재 확인
         if(boardById.isEmpty()) {
@@ -135,7 +138,8 @@ public class BoardService {
         }
 
         // 회원 비밀 번호 확인
-        if(!boardById.get().getUser().getUserPassword().equals(user.get().getUserPassword())) {
+
+        if (!encoder.matches(boardEntity.getUser().getUserPassword(), boardById.get().getUser().getUserPassword())) {
             throw new BusinessException(BusinessError.PASSWORD_MISMATCH);
         }
     }
