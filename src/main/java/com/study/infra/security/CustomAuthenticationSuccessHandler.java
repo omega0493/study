@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -29,8 +30,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 
         UserModel userById = authService.getUserById(Long.valueOf(username));
 
-        Collection<? extends GrantedAuthority> authorities =
-                SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+        List<SimpleGrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(userById.getUserRole().getCode()));
 
         UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
                 userById.getUserName(), userById.getUserPassword(), authorities);

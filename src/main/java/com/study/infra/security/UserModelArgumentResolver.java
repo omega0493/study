@@ -13,7 +13,8 @@ public class UserModelArgumentResolver implements HandlerMethodArgumentResolver 
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        return UserModel.class.isAssignableFrom(parameter.getParameterType());
+        boolean annotated = parameter.hasParameterAnnotation(AuthUser.class);
+        return annotated && UserModel.class.isAssignableFrom(parameter.getParameterType());
     }
 
     @Override

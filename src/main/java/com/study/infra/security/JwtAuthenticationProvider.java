@@ -35,7 +35,8 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
                 throw new BadCredentialsException("Wrong token");
             }
 
-            List<SimpleGrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(UserRole.USER.getCode()));
+            List<SimpleGrantedAuthority> authorities = List.of();
+
             return new UsernamePasswordAuthenticationToken(userId, null, authorities);
         }
 
