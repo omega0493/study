@@ -1,5 +1,6 @@
 package com.study.api.board.service;
 
+import com.study.api.auth.constant.UserRole;
 import com.study.api.board.model.BoardModel;
 import com.study.infra.common.exception.BusinessError;
 import com.study.infra.common.exception.BusinessException;
@@ -59,12 +60,7 @@ public class BoardService {
 
         // 회원 존재 확인
         if(user.isEmpty()) {
-            throw  new BusinessException(BusinessError.NO_REGISTERED_USER);
-        }
-
-        // 회원 비밀 번호 확인
-        if (!encoder.matches(board.getUser().getUserPassword(), user.get().getUserPassword())) {
-            throw new BusinessException(BusinessError.NO_REGISTERED_USER);
+                throw new BusinessException(BusinessError.NO_REGISTERED_USER);
         }
 
         board.setUser(user.get());
@@ -94,13 +90,9 @@ public class BoardService {
         // model -> entity
         Board boardEntity = boardModel.toEntity(boardModel);
 
-        Optional<Board> boardById = boardRepository.findById(id);
-
-        checkBoardAccess(boardById, boardEntity);
-
-        Board board = boardById.get();
-
-        board.edit(boardModel);
+        Board board = boardRepository.findById(id)
+                .orElseThrow(() -> new BusinessException(BusinessError.NO_REGISTERED_USER));
+        board.edit(boardEntity);
 
         // entity -> model
         return BoardModel.fromEntity(board);
@@ -108,39 +100,15 @@ public class BoardService {
 
     // 선택한 게시글 삭제
     @Transactional
-    public BoardModel deleteModel(Long id, BoardModel boardModel) {
+    public BoardModel deleteModel(Long id) {
 
-        // model -> entity
-        Board boardEntity = boardModel.toEntity(boardModel);
-
-        Optional<Board> boardById = boardRepository.findById(id);
-
-        checkBoardAccess(boardById, boardEntity);
-
+        Board board = boardRepository.findById(id)
+                .orElseThrow(() -> new BusinessException(BusinessError.NO_REGISTERED_BOARD));
         boardRepository.deleteById(id);
 
-        return boardModel;
+        return BoardModel.fromEntity(board);
     }
 
-    private void checkBoardAccess(Optional<Board> boardById, Board boardEntity) {
 
-        // 게시물 존재 확인
-        if(boardById.isEmpty()) {
-            throw new BusinessException(BusinessError.NO_REGISTERED_BOARD);
-        }
 
-        // 회원 조회
-        Optional<User> user = userRepository.findByUserName(boardById.get().getUser().getUserName());
-
-        // 회원 존재 확인
-        if(user.isEmpty()) {
-            throw  new BusinessException(BusinessError.NO_REGISTERED_USER);
-        }
-
-        // 회원 비밀 번호 확인
-
-        if (!encoder.matches(boardEntity.getUser().getUserPassword(), boardById.get().getUser().getUserPassword())) {
-            throw new BusinessException(BusinessError.PASSWORD_MISMATCH);
-        }
-    }
 }

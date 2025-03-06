@@ -32,9 +32,8 @@ public class Board extends AbstractAuditableEntity {
     @Column(name = "TITLE", nullable = false)
     private String title;
 
-
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "USER_ID", referencedColumnName = "USER_ID", updatable = false)
+    @JoinColumn(name = "USER_ID", referencedColumnName = "USER_ID", updatable = false, nullable = false)
     private User user;
 
     /**
@@ -55,7 +54,7 @@ public class Board extends AbstractAuditableEntity {
         this.user = user;
     }
 
-    public void edit(BoardModel board) {
+    public void edit(Board board) {
         this.title = board.getTitle();
         this.content = board.getContent();
 //        this.user = board.getUser();

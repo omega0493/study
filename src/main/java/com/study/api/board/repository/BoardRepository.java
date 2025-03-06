@@ -8,6 +8,6 @@ import java.util.Optional;
 
 public interface BoardRepository extends JpaRepository<Board, Long> {
 
-    @EntityGraph(attributePaths = {"user"})
-    Optional<Board> findById(Long id);
+//    @EntityGraph(attributePaths = {"user"})
+//    Optional<Board> findById(Long id);
 }

@@ -5,6 +5,7 @@ import com.study.infra.common.dto.ResponseDto;
 import com.study.api.board.dto.BoardDto;
 import com.study.api.board.model.BoardModel;
 import com.study.api.board.service.BoardService;
+import com.study.infra.security.AuthUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -55,7 +56,7 @@ public class BoardController {
     }
 
     @PutMapping("/{id}")
-    ResponseDto updateBoard(@PathVariable Long id, @RequestBody BoardDto boardDto, UserModel userModel) {
+    ResponseDto updateBoard(@PathVariable Long id, @RequestBody BoardDto boardDto, @AuthUser UserModel userModel) {
 
         // dto -> model
         BoardModel requestModel = boardDto.toModel();
@@ -65,13 +66,10 @@ public class BoardController {
         return new ResponseDto("200", "success", BoardDto.fromModel(responseModel));
     }
 
-    @PutMapping("/{id}/delete")
-    ResponseDto deleteBoard(@PathVariable Long id, @RequestBody BoardDto boardDto, UserModel userModel) {
+    @DeleteMapping("/{id}")
+    ResponseDto deleteBoard(@PathVariable Long id, UserModel userModel) {
 
-        // dto -> model
-        BoardModel requestModel = boardDto.toModel();
-
-        BoardModel responseModel = boardService.deleteModel(id, requestModel);
+        BoardModel responseModel = boardService.deleteModel(id);
 
         return new ResponseDto("200", "success", BoardDto.fromModel(responseModel));
     }
