@@ -1,6 +1,7 @@
-package com.study.infra.security;
+package com.study.infra.web;
 
 import com.study.api.auth.model.UserModel;
+import com.study.infra.security.AuthUser;
 import org.springframework.core.MethodParameter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
