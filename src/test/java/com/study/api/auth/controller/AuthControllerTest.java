@@ -1,5 +1,6 @@
 package com.study.api.auth.controller;
 
+import com.study.api.auth.constant.UserRole;
 import com.study.api.auth.controller.AuthController;
 import com.study.api.auth.dto.LoginDto;
 import com.study.api.auth.dto.LoginResponseDto;
@@ -7,6 +8,10 @@ import com.study.api.auth.model.UserModel;
 import com.study.api.auth.service.AuthService;
 import com.study.test.config.TestSecurityConfig;
 import com.study.test.util.TestUtil;
+import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
+import io.restassured.response.ExtractableResponse;
+import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -34,15 +39,29 @@ class AuthControllerTest {
 
     @Test
     void loginTest() throws Exception {
-
         // given
-        LoginDto dto = new LoginDto(1L, "foo", "bar");
+        LoginDto dto = new LoginDto(1L, "foo", "bar", UserRole.USER);
+//        RestAssured.baseURI = "http://localhost";
+//        RestAssured.port = 8080;
 
         UserModel userModel = UserModel.builder()
                 .id(1L)
                 .userName("foo")
                 .userPassword("bar")
                 .build();
+
+//        RestAssured
+//                .given().log().all()
+//                .contentType(ContentType.JSON)
+//                .body(dto)
+//                .when().log().all()
+//                .post("/auth/login")
+//                .then().log().all()
+//                .extract()
+//                .response().then()
+//                .statusCode(200)
+//                .body("message", equalTo("success"));
+
 
         when(authService.login(any()))
                 .thenReturn(LoginResponseDto.fromModel(userModel, "", ""));
@@ -52,6 +71,7 @@ class AuthControllerTest {
 //                        .id(1L)
 //                        .userName("foo")
 //                        .userPassword("bar")
+//                        .userRole(UserRole.USER)
 //                        .build());
 
         mockMvc
@@ -72,7 +92,7 @@ class AuthControllerTest {
     @Test
     void joinTest() throws Exception {
         // given
-        LoginDto dto = new LoginDto(1L, "foo", "bar");
+        LoginDto dto = new LoginDto(1L, "foo", "bar", UserRole.USER);
 
         when(authService.join(any()))
                 .thenReturn(UserModel.builder()
