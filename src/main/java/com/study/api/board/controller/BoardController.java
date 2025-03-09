@@ -37,40 +37,40 @@ public class BoardController {
     }
 
     @PostMapping
-    ResponseDto createBoard(@RequestBody BoardDto boardDto, UserModel userModel) {
+    BoardDto createBoard(@RequestBody BoardDto boardDto, UserModel userModel) {
 
         // dto -> model
         BoardModel requestModel = boardDto.toModel();
 
         BoardModel responseModel = boardService.createBoard(requestModel);
 
-        return new ResponseDto("200", "success", BoardDto.fromModel(responseModel));
+        return BoardDto.fromModel(responseModel);
     }
 
     @GetMapping("/{id}")
-    ResponseDto getBoardById(@PathVariable Long id, UserModel userModel) {
+    BoardDto getBoardById(@PathVariable Long id, UserModel userModel) {
 
-        BoardModel responseModel = boardService.getBoardById(id);
+        BoardModel responseModel =  boardService.getBoardById(id);
 
-        return new ResponseDto("200", "success", BoardDto.fromModel(responseModel));
+        return BoardDto.fromModel(responseModel);
     }
 
     @PutMapping("/{id}")
-    ResponseDto updateBoard(@PathVariable Long id, @RequestBody BoardDto boardDto, @AuthUser UserModel userModel) {
+    BoardDto updateBoard(@PathVariable Long id, @RequestBody BoardDto boardDto, @AuthUser UserModel userModel) {
 
         // dto -> model
         BoardModel requestModel = boardDto.toModel();
 
         BoardModel responseModel = boardService.updateBoard(id, requestModel);
 
-        return new ResponseDto("200", "success", BoardDto.fromModel(responseModel));
+        return BoardDto.fromModel(responseModel);
     }
 
     @DeleteMapping("/{id}")
-    ResponseDto deleteBoard(@PathVariable Long id, UserModel userModel) {
+    BoardDto deleteBoard(@PathVariable Long id, UserModel userModel) {
 
         BoardModel responseModel = boardService.deleteModel(id);
 
-        return new ResponseDto("200", "success", BoardDto.fromModel(responseModel));
+        return BoardDto.fromModel(responseModel);
     }
 }

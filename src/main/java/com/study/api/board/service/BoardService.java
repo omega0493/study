@@ -31,7 +31,7 @@ public class BoardService {
     // 전체 게시글 목록 조회
     public List<BoardModel> getAllBoards() {
 
-        List<Board> board = boardRepository.findAll();
+        List<Board> board = boardRepository.findAllWithUser();
 
         List<BoardModel> boardModels = new ArrayList<>();
 

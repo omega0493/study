@@ -65,8 +65,6 @@ public class BoardModel {
                 .title(board.getTitle())
                 .content(board.getContent())
                 .user(UserModel.fromEntity(board.getUser()))
-//                .createDate(board.getCreateDate())
-//                .updateDate(board.getUpdateDate())
                 .build();
     }
 }
