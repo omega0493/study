@@ -51,7 +51,7 @@ public class User extends AbstractAuditableEntity {
 
     @Builder
     @SuppressWarnings("unused")
-    public User(String userName, String userPassword, UserRole userRole) {
+    User(String userName, String userPassword, UserRole userRole) {
         this.userName = userName;
         this.userPassword = userPassword;
         this.userRole = userRole;
