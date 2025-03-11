@@ -21,6 +21,9 @@ public enum BusinessError {
 
     // Board --------------------------------------------------------------------------------------------------
     NO_REGISTERED_BOARD("board:find:no_registered_board", "존재하지 않는 게시글 입니다."),
+
+    // Comment --------------------------------------------------------------------------------------------------
+    NO_REGISTERED_COMMENT("board:find:no_registered_comment", "존재하지 않는 댓글 입니다."),
     ;
 
     BusinessError(String code, String message) {
