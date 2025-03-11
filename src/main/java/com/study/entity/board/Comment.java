@@ -3,7 +3,14 @@ package com.study.entity.board;
 import com.study.entity.base.AbstractAuditableEntity;
 import com.study.entity.user.User;
 import jakarta.persistence.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
+@Getter
+@NoArgsConstructor
 @Entity
 @Table(name = "COMMENT")
 public class Comment extends AbstractAuditableEntity {
@@ -23,5 +30,13 @@ public class Comment extends AbstractAuditableEntity {
 
     @Column(name = "CONTENT", nullable = false)
     private String content;
+
+    @Builder
+    @SuppressWarnings("unused")
+    Comment(String title, String content, User user, Board board, LocalDateTime createDate, LocalDateTime updateDate) {
+        this.content = content;
+        this.user = user;
+        this.board = board;
+    }
 
 }
