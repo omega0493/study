@@ -79,16 +79,9 @@ class BoardRepositoryTest {
                 .title("Spring Security 설정하기")
                 .content("Spring Security를 활용한 인증과 인가 설정 방법을 정리합니다.")
                 .user(user)
-                .createDate(null)
-                .updateDate(null)
                 .build();
 
-        List<Board> boardList = new ArrayList<>();
-        boardList.add(board);
-
-        for (Board board1 : boardList) {
-            entityManager.persist(board1);
-        }
+        entityManager.persist(board);
 
         //when
         List<Board> boards = boardRepository.findAllWithUser();
@@ -96,7 +89,7 @@ class BoardRepositoryTest {
         //then
         assertThat(boards)
                 .isNotNull()
-                .hasSize(1)  // 리스트에 하나의 Board 객체가 있는지 확인
-                .containsExactly(boardList.get(0));  // boardList의 첫 번째 Board 객체와 동일한지 확인
+                .hasSize(1)
+                .containsExactly(board);
     }
 }
