@@ -47,13 +47,13 @@ public class CommentModel {
         this.updateDate = updateDate;
     }
 
-    public Comment toEntity(CommentModel commentModel) {
+    public Comment toEntity() {
         return Comment.builder()
-                .content(commentModel.getContent())
-                .user(commentModel.getUser().toEntity())
-                .board(commentModel.getBoard().toEntity(commentModel.getBoard()))
-                .createDate(commentModel.getCreateDate())
-                .updateDate(commentModel.getUpdateDate())
+                .content(this.getContent())
+                .user(this.getUser().toEntity())
+                .board(this.getBoard().toEntity())
+                .createDate(this.getCreateDate())
+                .updateDate(this.getUpdateDate())
                 .build();
     }
 

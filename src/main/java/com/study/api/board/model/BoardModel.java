@@ -49,13 +49,13 @@ public class BoardModel {
         this.updateDate = updateDate;
     }
 
-    public Board toEntity(BoardModel boardModel) {
+    public Board toEntity() {
         return Board.builder()
-                .title(boardModel.getTitle())
-                .content(boardModel.getContent())
-                .user(boardModel.getUser().toEntity())
-                .createDate(boardModel.getCreateDate())
-                .updateDate(boardModel.getUpdateDate())
+                .title(this.getTitle())
+                .content(this.getContent())
+                .user(this.getUser().toEntity())
+                .createDate(this.getCreateDate())
+                .updateDate(this.getUpdateDate())
                 .build();
     }
 

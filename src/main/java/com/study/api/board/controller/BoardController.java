@@ -69,7 +69,7 @@ public class BoardController {
     @DeleteMapping("/{id}")
     BoardDto deleteBoard(@PathVariable Long id, UserModel userModel) {
 
-        BoardModel responseModel = boardService.deleteModel(id);
+        BoardModel responseModel = boardService.deleteBoard(id);
 
         return BoardDto.fromModel(responseModel);
     }

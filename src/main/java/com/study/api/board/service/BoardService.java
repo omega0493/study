@@ -53,7 +53,7 @@ public class BoardService {
     public BoardModel createBoard(BoardModel boardModel) {
 
         // model -> entity
-        Board board = boardModel.toEntity(boardModel);
+        Board board = boardModel.toEntity();
 
         // 회원 조회
         Optional<User> user = userRepository.findByUserName(board.getUser().getUserName());
@@ -88,7 +88,7 @@ public class BoardService {
     public BoardModel updateBoard(Long id, BoardModel boardModel) {
 
         // model -> entity
-        Board boardEntity = boardModel.toEntity(boardModel);
+        Board boardEntity = boardModel.toEntity();
 
         Board board = boardRepository.findById(id)
                 .orElseThrow(() -> new BusinessException(BusinessError.NO_REGISTERED_USER));
@@ -100,7 +100,7 @@ public class BoardService {
 
     // 선택한 게시글 삭제
     @Transactional
-    public BoardModel deleteModel(Long id) {
+    public BoardModel deleteBoard(Long id) {
 
         Board board = boardRepository.findById(id)
                 .orElseThrow(() -> new BusinessException(BusinessError.NO_REGISTERED_BOARD));
