@@ -3,6 +3,8 @@ package com.study.infra.security;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,7 +21,7 @@ import java.util.function.Function;
 @Slf4j
 public class JwtProvider {
     // jwt 만료 시간 1시간
-    private static final long JWT_TOKEN_VALID = (long) 1000 * 60 * 30;
+    private static final long JWT_TOKEN_VALID = (long) 1000 * 60 * 60 * 8;
 
     @Value("${jwt.secret}")
     private String secret;

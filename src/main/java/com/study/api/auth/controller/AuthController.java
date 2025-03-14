@@ -40,7 +40,7 @@ public class AuthController {
 
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.SET_COOKIE, refreshTokenCookie.toString());
-        headers.add(HttpHeaders.AUTHORIZATION, "Bearer %s".formatted(loginResponseDto.accessToken()));
+        headers.add(HttpHeaders.AUTHORIZATION, "Bearer %s" .formatted(loginResponseDto.accessToken()));
 
         return ResponseEntity
                 .status(HttpStatus.OK)

@@ -2,7 +2,6 @@ package com.study.api.auth.service;
 
 import com.study.api.auth.dto.LoginResponseDto;
 import com.study.api.auth.model.UserModel;
-import com.study.api.auth.service.AuthService;
 import com.study.infra.common.exception.BusinessException;
 import com.study.entity.user.User;
 import com.study.api.auth.repository.UserRepository;

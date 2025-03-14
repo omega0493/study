@@ -1,7 +1,6 @@
 package com.study.api.board.model;
 
 import com.study.api.auth.model.UserModel;
-import com.study.entity.board.Board;
 import com.study.entity.board.Comment;
 import lombok.Builder;
 import lombok.Getter;

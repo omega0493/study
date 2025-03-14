@@ -1,13 +1,12 @@
 package com.study.api.board.service;
 
-import com.study.api.auth.constant.UserRole;
+import com.study.api.auth.repository.UserRepository;
 import com.study.api.board.model.BoardModel;
+import com.study.api.board.repository.BoardRepository;
+import com.study.entity.board.Board;
+import com.study.entity.user.User;
 import com.study.infra.common.exception.BusinessError;
 import com.study.infra.common.exception.BusinessException;
-import com.study.entity.board.Board;
-import com.study.api.board.repository.BoardRepository;
-import com.study.entity.user.User;
-import com.study.api.auth.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -59,8 +58,8 @@ public class BoardService {
         Optional<User> user = userRepository.findByUserName(board.getUser().getUserName());
 
         // 회원 존재 확인
-        if(user.isEmpty()) {
-                throw new BusinessException(BusinessError.NO_REGISTERED_USER);
+        if (user.isEmpty()) {
+            throw new BusinessException(BusinessError.NO_REGISTERED_USER);
         }
 
         board.setUser(user.get());
@@ -76,7 +75,7 @@ public class BoardService {
 
         Optional<Board> board = boardRepository.findById(id);
 
-        if(board.isEmpty()) {
+        if (board.isEmpty()) {
             throw new BusinessException(BusinessError.NO_REGISTERED_BOARD);
         }
 
@@ -108,7 +107,6 @@ public class BoardService {
 
         return BoardModel.fromEntity(board);
     }
-
 
 
 }

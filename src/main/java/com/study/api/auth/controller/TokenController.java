@@ -27,7 +27,7 @@ public class TokenController {
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
-                if ("refresh_token".equals(cookie.getName())) {
+                if ("refresh_token" .equals(cookie.getName())) {
                     refreshToken = cookie.getValue();
                     break;
                 }
@@ -38,7 +38,7 @@ public class TokenController {
 
         HttpHeaders headers = new HttpHeaders();
 
-        headers.add(HttpHeaders.AUTHORIZATION, "Bearer %s".formatted(jwtTokenDto.accessToken()));
+        headers.add(HttpHeaders.AUTHORIZATION, "Bearer %s" .formatted(jwtTokenDto.accessToken()));
 
         return ResponseEntity
                 .status(HttpStatus.OK)

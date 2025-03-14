@@ -1,7 +1,6 @@
 package com.study.api.board.controller;
 
 import com.study.api.auth.model.UserModel;
-import com.study.infra.common.dto.ResponseDto;
 import com.study.api.board.dto.BoardDto;
 import com.study.api.board.model.BoardModel;
 import com.study.api.board.service.BoardService;
@@ -50,7 +49,7 @@ public class BoardController {
     @GetMapping("/{id}")
     BoardDto getBoardById(@PathVariable Long id, UserModel userModel) {
 
-        BoardModel responseModel =  boardService.getBoardById(id);
+        BoardModel responseModel = boardService.getBoardById(id);
 
         return BoardDto.fromModel(responseModel);
     }

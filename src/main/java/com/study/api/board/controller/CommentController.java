@@ -1,6 +1,5 @@
 package com.study.api.board.controller;
 
-import com.study.api.board.dto.BoardDto;
 import com.study.api.board.dto.CommentDto;
 import com.study.api.board.model.CommentModel;
 import com.study.api.board.service.CommentService;
@@ -24,8 +23,6 @@ public class CommentController {
 
         return CommentDto.fromModel(responseModel);
     }
-
-
 
 
 }

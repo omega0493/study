@@ -17,7 +17,7 @@ public class TokenService {
 
         Boolean validateToken = jwtProvider.validateToken(refreshToken);
 
-        if(!validateToken) {
+        if (!validateToken) {
             throw new BusinessException(BusinessError.REFRESH_TOKEN_INVALID);
         }
 
