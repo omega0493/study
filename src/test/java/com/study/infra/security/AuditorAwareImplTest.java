@@ -31,7 +31,7 @@ class AuditorAwareImplTest {
 
         // given
         when(authentication.isAuthenticated()).thenReturn(true);
-        when(authentication.getName()).thenReturn("foo");
+        when(authentication.getName()).thenReturn("1");
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         // when
@@ -41,11 +41,11 @@ class AuditorAwareImplTest {
         assertThat(maybeCurrentAuditor)
                 .isNotNull()
                 .isPresent()
-                .hasValue("foo");
+                .hasValue("1");
     }
 
     @Test
-    void fail1() {
+    void returnEmptyWhenNoAuthenticatedUser() {
         // when
         Optional<String> maybeCurrentAuditor = sut.getCurrentAuditor();
 
@@ -56,7 +56,7 @@ class AuditorAwareImplTest {
     }
 
     @Test
-    void fail2() {
+    void returnEmptyWhenUserIsUnauthenticated() {
 
         // given
         when(authentication.isAuthenticated()).thenReturn(false);
