@@ -22,7 +22,6 @@ import static org.hamcrest.core.IsEqual.equalTo;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -42,10 +41,10 @@ class BoardControllerTest {
 
         //given
         BoardDto dto = new BoardDto(
-                1L ,
-                "Spring Security 설정하기" ,
-                "Spring Security를 활용한 인증과 인가 설정 방법을 정리." ,
-                "foo" ,
+                1L,
+                "Spring Security 설정하기",
+                "Spring Security를 활용한 인증과 인가 설정 방법을 정리.",
+                "foo",
                 "bar",
                 null,
                 null
@@ -74,7 +73,7 @@ class BoardControllerTest {
         mockMvc
                 //when
                 .perform(get("/board/all")
-                                .contentType(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
                 )
 
                 //then
@@ -96,10 +95,10 @@ class BoardControllerTest {
 
         //given
         BoardDto dto = new BoardDto(
-                1L ,
-                "Spring Security 설정하기" ,
-                "Spring Security를 활용한 인증과 인가 설정 방법을 정리." ,
-                "foo" ,
+                1L,
+                "Spring Security 설정하기",
+                "Spring Security를 활용한 인증과 인가 설정 방법을 정리.",
+                "foo",
                 "bar",
                 null,
                 null
@@ -147,10 +146,10 @@ class BoardControllerTest {
 
         //given
         BoardDto dto = new BoardDto(
-                1L ,
-                "Spring Security 설정하기" ,
-                "Spring Security를 활용한 인증과 인가 설정 방법을 정리." ,
-                "foo" ,
+                1L,
+                "Spring Security 설정하기",
+                "Spring Security를 활용한 인증과 인가 설정 방법을 정리.",
+                "foo",
                 "bar",
                 null,
                 null
@@ -197,10 +196,10 @@ class BoardControllerTest {
 
         //given
         BoardDto dto = new BoardDto(
-                1L ,
-                "Spring Security 설정하기" ,
-                "Spring Security를 활용한 인증과 인가 설정 방법을 정리." ,
-                "foo" ,
+                1L,
+                "Spring Security 설정하기",
+                "Spring Security를 활용한 인증과 인가 설정 방법을 정리.",
+                "foo",
                 "bar",
                 null,
                 null
@@ -251,10 +250,10 @@ class BoardControllerTest {
 
         //given
         BoardDto dto = new BoardDto(
-                1L ,
-                "Spring Security 설정하기" ,
-                "Spring Security를 활용한 인증과 인가 설정 방법을 정리." ,
-                "foo" ,
+                1L,
+                "Spring Security 설정하기",
+                "Spring Security를 활용한 인증과 인가 설정 방법을 정리.",
+                "foo",
                 "bar",
                 null,
                 null

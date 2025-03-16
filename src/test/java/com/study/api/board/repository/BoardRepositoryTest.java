@@ -1,9 +1,6 @@
 package com.study.api.board.repository;
 
 import com.study.api.auth.constant.UserRole;
-import com.study.api.auth.model.UserModel;
-import com.study.api.auth.repository.UserRepository;
-import com.study.api.board.model.BoardModel;
 import com.study.entity.board.Board;
 import com.study.entity.user.User;
 import com.study.infra.common.configuration.JpaConfiguration;
@@ -21,9 +18,7 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

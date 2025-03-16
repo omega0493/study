@@ -17,17 +17,22 @@ class BoardServiceTest {
     private AuthService sut;
 
     @Test
-    void getAllBoardsTest() {}
+    void getAllBoardsTest() {
+    }
 
     @Test
-    void createBoardTest() {}
+    void createBoardTest() {
+    }
 
     @Test
-    void getBoardByIdTest() {}
+    void getBoardByIdTest() {
+    }
 
     @Test
-    void updateBoardTest() {}
+    void updateBoardTest() {
+    }
 
     @Test
-    void deleteBoardTest() {}
+    void deleteBoardTest() {
+    }
 }
