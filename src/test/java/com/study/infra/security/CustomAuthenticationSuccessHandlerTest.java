@@ -4,24 +4,30 @@ import com.study.api.auth.constant.UserRole;
 import com.study.api.auth.model.UserModel;
 import com.study.api.auth.repository.UserRepository;
 import com.study.api.auth.service.AuthService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
-import java.util.List;
+import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest(classes = CustomAuthenticationSuccessHandler.class)
+@ExtendWith(MockitoExtension.class)
 class CustomAuthenticationSuccessHandlerTest {
 
-    @MockitoBean
+    @InjectMocks
+    private CustomAuthenticationSuccessHandler successHandler;
+
+    @Mock
     private AuthService authService;
 
     @Mock
@@ -30,8 +36,14 @@ class CustomAuthenticationSuccessHandlerTest {
     @Mock
     private UserRepository userRepository;
 
+    @Mock
+    private HttpServletRequest request;
+
+    @Mock
+    private HttpServletResponse response;
+
     @Test
-    void onAuthenticationSuccess() {
+    void onAuthenticationSuccess() throws IOException {
 
         // given
         UserModel model = UserModel.builder()
@@ -45,31 +57,23 @@ class CustomAuthenticationSuccessHandlerTest {
         when(authService.getUserById(1L)).thenReturn(model);
 
         // when
-        List<SimpleGrantedAuthority> authorities =
-                List.of(new SimpleGrantedAuthority(model.getUserRole().getCode()));
+        successHandler.onAuthenticationSuccess(request, response, authentication);
 
-
-        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
-                model.getUserName(), model.getUserPassword(), authorities);
-
-        auth.setDetails(model);
-
-        SecurityContextHolder.getContext().setAuthentication(auth);
+        Authentication contextAuth = SecurityContextHolder.getContext().getAuthentication();
 
         // then
-        assertThat(authorities)
-                .containsExactly(new SimpleGrantedAuthority("ROLE_USER"));
+        assertThat(contextAuth).isNotNull();
 
-        assertThat(SecurityContextHolder.getContext().getAuthentication())
-                .isEqualTo(auth);
+        assertThat(contextAuth.getAuthorities().stream().map(GrantedAuthority::getAuthority))
+                .containsExactly(String.valueOf(new SimpleGrantedAuthority(UserRole.USER.getCode())));
 
-        assertThat(auth.getPrincipal())
+        assertThat(contextAuth.getPrincipal())
                 .isEqualTo("foo");
 
-        assertThat(auth.getCredentials())
+        assertThat(contextAuth.getCredentials())
                 .isEqualTo("bar");
 
-        assertThat(auth.getDetails())
+        assertThat(contextAuth.getDetails())
                 .isEqualTo(model);
 
     }
