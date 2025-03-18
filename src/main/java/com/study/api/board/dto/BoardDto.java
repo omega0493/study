@@ -1,7 +1,7 @@
 package com.study.api.board.dto;
 
-import com.study.api.auth.model.UserModel;
-import com.study.api.board.model.BoardModel;
+import com.study.entity.board.Board;
+import com.study.entity.user.User;
 
 import java.time.LocalDateTime;
 
@@ -19,26 +19,26 @@ public record BoardDto(
 
         LocalDateTime updateDate
 ) {
-    public BoardModel toModel() {
-        return BoardModel.builder()
+    public Board toEntity() {
+        return Board.builder()
                 .title(this.title)
                 .content(this.content)
-                .user(UserModel.builder()
+                .user(User.builder()
                         .userName(this.userName)
                         .userPassword(this.userPassword)
                         .build())
                 .build();
     }
 
-    public static BoardDto fromModel(BoardModel boardModel) {
+    public static BoardDto fromEntity(Board board) {
         return new BoardDto(
-                boardModel.getId(),
-                boardModel.getTitle(),
-                boardModel.getContent(),
-                boardModel.getUser().getUserName(),
-                boardModel.getUser().getUserPassword(),
-                boardModel.getCreateDate(),
-                boardModel.getUpdateDate()
+                board.getId(),
+                board.getTitle(),
+                board.getContent(),
+                board.getUser().getUserName(),
+                board.getUser().getUserPassword(),
+                board.getCreatedAt(),
+                board.getLastModifiedAt()
         );
     }
 

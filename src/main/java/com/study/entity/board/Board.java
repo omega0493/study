@@ -1,16 +1,11 @@
 package com.study.entity.board;
 
-import com.study.api.board.model.BoardModel;
 import com.study.entity.base.AbstractAuditableEntity;
 import com.study.entity.user.User;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-
-import java.time.LocalDateTime;
 
 /**
  *  게시글
@@ -44,7 +39,7 @@ public class Board extends AbstractAuditableEntity {
 
     @Builder
     @SuppressWarnings("unused")
-    Board(String title, String content, User user, LocalDateTime createDate, LocalDateTime updateDate) {
+    Board(String title, String content, User user) {
         this.title = title;
         this.content = content;
         this.user = user;

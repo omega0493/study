@@ -1,18 +1,15 @@
 package com.study.api.board.service;
 
 import com.study.api.auth.repository.UserRepository;
-import com.study.api.board.model.BoardModel;
 import com.study.api.board.repository.BoardRepository;
 import com.study.entity.board.Board;
 import com.study.entity.user.User;
 import com.study.infra.common.exception.BusinessError;
 import com.study.infra.common.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -25,34 +22,16 @@ public class BoardService {
 
     private final UserRepository userRepository;
 
-    private final PasswordEncoder encoder;
-
     // 전체 게시글 목록 조회
-    public List<BoardModel> getAllBoards() {
-
-        List<Board> board = boardRepository.findAllWithUser();
-
-        List<BoardModel> boardModels = new ArrayList<>();
-
-        for (Board boardItem : board) {
-
-            // entity -> dto
-            BoardModel boardModel = BoardModel.fromEntity(boardItem);
-
-            boardModels.add(boardModel);
-        }
-
-        return boardModels.stream()
-                .sorted(Comparator.comparing(BoardModel::getUpdateDate).reversed())
+    public List<Board> getAllBoards() {
+        return boardRepository.findAllWithUser().stream()
+                .sorted(Comparator.comparing(Board::getLastModifiedAt).reversed())
                 .toList();
     }
 
     // 게시글 작성
     @Transactional
-    public BoardModel createBoard(BoardModel boardModel) {
-
-        // model -> entity
-        Board board = boardModel.toEntity();
+    public Board createBoard(Board board) {
 
         // 회원 조회
         Optional<User> user = userRepository.findByUserName(board.getUser().getUserName());
@@ -66,12 +45,11 @@ public class BoardService {
 
         boardRepository.save(board);
 
-        // entity -> model
-        return BoardModel.fromEntity(board);
+        return board;
     }
 
     // 선택한 게시글 조회
-    public BoardModel getBoardById(Long id) {
+    public Board getBoardById(Long id) {
 
         Optional<Board> board = boardRepository.findById(id);
 
@@ -79,34 +57,29 @@ public class BoardService {
             throw new BusinessException(BusinessError.NO_REGISTERED_BOARD);
         }
 
-        return BoardModel.fromEntity(board.get());
+        return board.get();
     }
 
     // 선택한 게시글 수정
     @Transactional
-    public BoardModel updateBoard(Long id, BoardModel boardModel) {
+    public Board updateBoard(Long id, Board board) {
 
-        // model -> entity
-        Board boardEntity = boardModel.toEntity();
-
-        Board board = boardRepository.findById(id)
+        Board foundBoard = boardRepository.findById(id)
                 .orElseThrow(() -> new BusinessException(BusinessError.NO_REGISTERED_USER));
-        board.edit(boardEntity);
+        foundBoard.edit(board);
 
-        // entity -> model
-        return BoardModel.fromEntity(board);
+        return foundBoard;
     }
 
     // 선택한 게시글 삭제
     @Transactional
-    public BoardModel deleteBoard(Long id) {
+    public Board deleteBoard(Long id) {
 
         Board board = boardRepository.findById(id)
                 .orElseThrow(() -> new BusinessException(BusinessError.NO_REGISTERED_BOARD));
         boardRepository.deleteById(id);
 
-        return BoardModel.fromEntity(board);
+        return board;
     }
-
 
 }

@@ -3,7 +3,6 @@ package com.study.infra.security;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.study.infra.common.dto.ResponseDto;
 import com.study.infra.common.exception.BusinessError;
-import com.study.infra.common.exception.BusinessException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.BadCredentialsException;

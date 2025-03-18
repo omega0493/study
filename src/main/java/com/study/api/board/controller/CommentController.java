@@ -1,7 +1,5 @@
 package com.study.api.board.controller;
 
-import com.study.api.board.dto.CommentDto;
-import com.study.api.board.model.CommentModel;
 import com.study.api.board.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,11 +15,9 @@ public class CommentController {
     private final CommentService commentService;
 
     @GetMapping("/{id}")
-    CommentDto getCommentById(@PathVariable Long id) {
+    void getCommentById(@PathVariable Long id) {
 
-        CommentModel responseModel = commentService.getCommentById(id);
-
-        return CommentDto.fromModel(responseModel);
+         commentService.getCommentById(id);
     }
 
 
