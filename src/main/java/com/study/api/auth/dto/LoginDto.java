@@ -15,6 +15,7 @@ public record LoginDto(
         return UserModel.builder()
                 .userName(this.userName)
                 .userPassword(this.userPassword)
+                .userRole(this.userRole)
                 .build();
 
     }

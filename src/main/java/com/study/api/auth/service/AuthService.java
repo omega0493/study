@@ -4,6 +4,7 @@ import com.study.api.auth.dto.LoginResponseDto;
 import com.study.api.auth.model.UserModel;
 import com.study.api.auth.repository.UserRepository;
 import com.study.entity.user.User;
+import com.study.infra.aop.UserIdAware;
 import com.study.infra.common.exception.BusinessError;
 import com.study.infra.common.exception.BusinessException;
 import com.study.infra.security.JwtProvider;
