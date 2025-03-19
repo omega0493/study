@@ -3,6 +3,7 @@ package com.study.entity.user;
 import com.study.api.auth.constant.UserRole;
 import com.study.entity.base.AbstractAuditableEntity;
 import com.study.entity.board.Board;
+import com.study.infra.aop.UserIdAware;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,7 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "USER")
-public class User extends AbstractAuditableEntity {
+public class User extends AbstractAuditableEntity implements UserIdAware {
 
     /**
      * 사용자 아이디
@@ -62,4 +63,8 @@ public class User extends AbstractAuditableEntity {
     }
 
 
+    @Override
+    public Long getUserId() {
+        return id;
+    }
 }

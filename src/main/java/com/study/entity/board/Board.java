@@ -2,6 +2,7 @@ package com.study.entity.board;
 
 import com.study.entity.base.AbstractAuditableEntity;
 import com.study.entity.user.User;
+import com.study.infra.aop.UserIdAware;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,7 +15,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "BOARD")
-public class Board extends AbstractAuditableEntity {
+public class Board extends AbstractAuditableEntity implements UserIdAware {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,5 +54,10 @@ public class Board extends AbstractAuditableEntity {
         this.title = board.getTitle();
         this.content = board.getContent();
 //        this.user = board.getUser();
+    }
+
+    @Override
+    public Long getUserId() {
+        return user.getId();
     }
 }
