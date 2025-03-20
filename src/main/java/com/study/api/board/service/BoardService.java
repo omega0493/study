@@ -4,6 +4,8 @@ import com.study.api.auth.repository.UserRepository;
 import com.study.api.board.repository.BoardRepository;
 import com.study.entity.board.Board;
 import com.study.entity.user.User;
+import com.study.infra.aop.CheckPermission;
+import com.study.infra.aop.EntityId;
 import com.study.infra.common.exception.BusinessError;
 import com.study.infra.common.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -62,7 +65,8 @@ public class BoardService {
 
     // 선택한 게시글 수정
     @Transactional
-    public Board updateBoard(Long id, Board board) {
+    @CheckPermission
+    public Board updateBoard(@EntityId(Board.class) Long id, Board board) {
 
         Board foundBoard = boardRepository.findById(id)
                 .orElseThrow(() -> new BusinessException(BusinessError.NO_REGISTERED_USER));
@@ -73,7 +77,8 @@ public class BoardService {
 
     // 선택한 게시글 삭제
     @Transactional
-    public Board deleteBoard(Long id) {
+    @CheckPermission
+    public Board deleteBoard(@EntityId(Board.class) Long id) {
 
         Board board = boardRepository.findById(id)
                 .orElseThrow(() -> new BusinessException(BusinessError.NO_REGISTERED_BOARD));

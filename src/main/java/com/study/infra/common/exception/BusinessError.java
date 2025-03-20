@@ -15,6 +15,7 @@ public enum BusinessError {
     REGISTERED_USER("user:join:registered_user", "이미 존재하는 유저 입니다."),
     PASSWORD_MISMATCH("user:find:password_mismatch", "비밀번호가 일치하지 않습니다."),
     INCORRECT_CREDENTIALS("user:auth:incorrect_credentials", "잘못된 인증 정보입니다."),
+    WRONG_PERMISSION("user:auth:wrong_permission", "접근 권한이 없습니다."),
 
     // Token
     REFRESH_TOKEN_INVALID("token:refresh_token_invalid", "Refresh Token이 만료되었거나 정상적인 Token이 아닙니다."),

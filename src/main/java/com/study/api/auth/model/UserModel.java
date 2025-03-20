@@ -2,13 +2,14 @@ package com.study.api.auth.model;
 
 import com.study.api.auth.constant.UserRole;
 import com.study.entity.user.User;
+import com.study.infra.aop.UserIdAware;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class UserModel {
+public class UserModel implements UserIdAware {
 
     /**
      * 유저 번호
@@ -53,5 +54,10 @@ public class UserModel {
                 .userPassword(user.getUserPassword())
                 .userRole(user.getUserRole())
                 .build();
+    }
+
+    @Override
+    public Long getUserId() {
+        return id;
     }
 }
