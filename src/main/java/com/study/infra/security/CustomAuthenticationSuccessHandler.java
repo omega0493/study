@@ -30,7 +30,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 
         UserModel userById = authService.getUserById(Long.valueOf(username));
 
-        List<SimpleGrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(userById.getUserRole().getCode()));
+        List<GrantedAuthority> authorities = List.of(userById.getUserRole());
 
         UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
                 userById.getUserName(), userById.getUserPassword(), authorities);
