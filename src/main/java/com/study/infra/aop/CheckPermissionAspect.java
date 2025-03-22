@@ -1,23 +1,20 @@
 package com.study.infra.aop;
 
 import com.study.api.auth.constant.UserRole;
-import com.study.api.auth.model.UserModel;
 import com.study.entity.base.AbstractAuditableEntity;
 import com.study.infra.common.exception.BusinessError;
 import com.study.infra.common.exception.BusinessException;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.reflect.MethodSignature;
-import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
-import java.lang.reflect.Parameter;
+import java.util.Collection;
 import java.util.Objects;
 
 @Aspect
@@ -25,51 +22,27 @@ import java.util.Objects;
 @RequiredArgsConstructor
 class CheckPermissionAspect {
 
+    private final EntityIdParameterResolver resolver;
     private final EntityManager entityManager;
 
     @Before("@annotation(CheckPermission)")
-    void logExecutionTime(JoinPoint joinPoint) throws Throwable {
+    void checkPermission(JoinPoint joinPoint) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null) {
             return;
         }
 
-        if (!(authentication.getDetails() instanceof UserModel userModel)) {
+        ResolvedEntity resolvedEntity = resolver.resolve(joinPoint);
+        if (resolvedEntity == null) {
             return;
         }
 
-        Signature signature = joinPoint.getSignature();
-        if (!(signature instanceof MethodSignature ms)) {
-            return;
-        }
-
-        Parameter[] parameters = ms.getMethod().getParameters();
-        Object[] args = joinPoint.getArgs();
-
-        Class<?> entityType = null;
-        Object entityId = null;
-        for (int i = 0; i < parameters.length; i++) {
-            Parameter parameter = parameters[i];
-            Object arg = args[i];
-
-            EntityId annotation = AnnotationUtils.findAnnotation(parameter, EntityId.class);
-            if (annotation != null) {
-                entityType = annotation.value();
-                entityId = arg;
-                break;
-            }
-        }
-
-        if (entityType == null || entityId == null) {
-            return;
-        }
-
-        Object entity = entityManager.find(entityType, entityId);
+        Object entity = entityManager.find(resolvedEntity.type(), resolvedEntity.id());
         if (!(entity instanceof AbstractAuditableEntity auditable)) {
             return;
         }
 
-        String currentUserName = userModel.getUserName();
+        String currentUserName = authentication.getName();
         String targetUserName = auditable.getCreatedBy();
 
         // 동일한 사용자면 통과
@@ -77,7 +50,8 @@ class CheckPermissionAspect {
             return;
         }
 
-        if (userModel.getUserRole() == UserRole.ADMIN) {
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        if (authorities.contains(UserRole.ADMIN)) {
             return;
         }
 
